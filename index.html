@@ -1,266 +1,440 @@
 <!DOCTYPE html>
 <html lang="id">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Kalkulator PK</title>
-        <link rel="icon" type="image/png" href="img\SAFD.png" />
-        <script src="https://cdn.tailwindcss.com"></script>
-        <style>
-          .custom-select-wrapper {
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalkulator PK</title>
+    <link rel="icon" type="image/png" href="img/SAFD.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* --- CSS untuk Dropdown Kustom --- */
+        .custom-select-wrapper {
             position: relative;
-          }
-      
-          .custom-select-button {
+        }
+
+        .custom-select-button {
             width: 100%;
-            padding: 1rem;
-            background-color: #374151; /* bg-gray-700 */
-            color: #9ca3af; /* text-gray-200 */
-            border-radius: 0.5rem;
+            padding: 0.75rem 1rem; /* Sesuaikan padding agar mirip dengan select standar */
+            background-color: #ffffff; /* Warna background seperti select standar */
+            color: #4a5568; /* text-gray-700, agar teks lebih gelap dan terbaca di bg putih */
+
+            border-width: 1px;
+            border-style: solid;
+            border-color: #d1d5db; /* gray-300 */
+
+            border-radius: 0.25rem; /* rounded */
             cursor: pointer;
-          }
-      
-          .custom-select-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem; /* text-base */
+            font-weight: normal; /* font-normal */
+            transition: all 0.15s ease-in-out;
+        }
+
+        /* Styling saat focus */
+        .custom-select-button:focus {
+            border-color: #3b82f6; /* focus:border-blue-600 */
+            outline: none; /* focus:outline-none */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); /* Optional, for focus ring */
+        }
+
+        .custom-select-button .arrow-icon {
+            margin-left: 0.5rem;
+            width: 1.5em; /* Ukuran panah */
+            height: 1.5em;
+            transition: transform 0.2s ease;
+        }
+
+        .custom-select-button.open .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .custom-select-options {
             position: absolute;
-            top: 100%;
+            top: 100%; /* Penting: Akan selalu muncul ke bawah dari button */
             left: 0;
             right: 0;
-            background-color: #374151;
-            max-height: 250px;
-            overflow-y: auto;
-            z-index: 10;
-            border-radius: 0.5rem;
+            background-color: #ffffff; /* Background putih */
+            border: 1px solid #d1d5db; /* Border abu-abu */
+            /* ----- PERUBAHAN DI SINI: Atur max-height tetap ----- */
+            max-height: 200px; /* Misalnya 200px, ubah sesuai keinginan Anda */
+            overflow-y: auto; /* Ini yang membuat scrollbar muncul */
+            /* ---------------------------------------------------- */
+            z-index: 20; /* Pastikan di atas elemen lain */
+            border-radius: 0.25rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
             display: none;
-          }
-      
-          .custom-select-option {
+            margin-top: 0.25rem; /* Sedikit jarak dari button */
+        }
+
+        .custom-select-option {
             padding: 0.75rem 1rem;
             cursor: pointer;
-            color: #9ca3af;
-          }
-      
-          .custom-select-option:hover {
-            background-color: #4b5563;
-          }
-      
-          .optgroup-label {
+            color: #4a5568; /* text-gray-700 */
+        }
+
+        .custom-select-option:hover {
+            background-color: #f3f4f6; /* bg-gray-100 */
+            color: #1f2937; /* text-gray-900 */
+        }
+
+        .custom-select-option.selected {
+            background-color: #eff6ff; /* bg-blue-50 */
+            color: #2563eb; /* text-blue-700 */
+            font-weight: 600; /* semi-bold */
+        }
+
+        .optgroup-label {
             font-weight: bold;
             padding: 0.75rem 1rem;
-            /* background-color: #1f2937; */
-            color: #9ca3af;
-          }
-        </style>
-      </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+            color: #6b7280; /* text-gray-500 */
+            background-color: #f3f4f6; /* sedikit berbeda untuk optgroup */
+            
+        }
+    </style>
+</head>
+<body class="bg-cover bg-center bg-fixed flex justify-center min-h-screen p-4" style="background-image: url('img/background.jpg');">
+    <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md mt-10 mb-10">
         <div class="flex justify-center items-center space-x-4 mb-1">
             <img
-                src="img\SAFD.png"
+                src="img/SAFD.png"
                 alt="Logo SAFD"
-                class="w-24 h-24 object-contain"
+                class="w-20 h-20 object-contain"
             />
         </div>
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Kalkulator PK</h1>
-            <p class="text-sm font-semibold text-gray-600 opacity-75 mt-2">Created by: Jareth Ashford / Ilham</p>
-            <p class="text-sm font-semibold text-gray-600 opacity-75">Script by: Hank Mccormick / Roni</p>
+            <h1 class="text-2xl font-bold text-gray-800">Kalkulator PK</h1>
         </div>
 
         <div class="mb-6">
-                <label for="injuryType" class="block text-gray-700 text-sm font-semibold mb-2">Pilih Jenis Luka</label>
-                <select id="injuryType" class="form-select block w-full px-4 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
-                    <option value="">Pilih Luka</option>
-                    <optgroup label="With Bullets (Luka dengan peluru)">
-                        <option value="head_flesh_50">Head: Flesh Wound (1 bullet) (50%)</option>
-                        <option value="head_vital_90">Head: Vital Wound (1 bullet) (90%)</option>
-                        <option value="neck_flesh_55">Neck: Any Wound (1 bullet) (55%)</option>
-                        <option value="torso_flesh_25">Torso: Flesh Wound (1 bullet) (25%)</option>
-                        <option value="torso_vital_60">Torso: Vital Wound (1 bullet) (60%)</option>
-                        <option value="groin_flesh_25">Groin: Flesh Wound (1 bullet) (25%)</option>
-                        <option value="groin_vital_45">Groin: Vital Wound (1 bullet) (45%)</option>
-                        <option value="arms_legs_flesh_10">Arms & Legs: Flesh Wound (1 bullet) (10%)</option>
-                        <option value="arms_legs_vital_15">Arms & Legs: Vital Wound (1 bullet) (15%)</option>
-                    </optgroup>
-                    <optgroup label="Without Bullets (Luka tanpa peluru)">
-                        <option value="head_flesh_45">Head: Flesh Wound (45%)</option>
-                        <option value="head_vital_90">Head: Vital Wound (90%)</option>
-                        <option value="brain_90">Brain: Any Wound (90%)</option>
-                        <option value="neck_50">Neck: Any Wound (50%)</option>
-                        <option value="torso_flesh_20">Torso: Flesh Wound (20%)</option>
-                        <option value="torso_vital_50">Torso: Vital Wound (50%)</option>
-                        <option value="groin_flesh_20">Groin: Flesh Wound (20%)</option>
-                        <option value="groin_vital_40">Groin: Vital Wound (40%)</option>
-                        <option value="arms_legs_flesh_10">Arms & Legs: Flesh Wound (10%)</option>
-                        <option value="arms_legs_vital_15">Arms & Legs: Vital Wound (15%)</option>
-                    </optgroup>
-                </select>
-            </div>
-
-            <!-- Input untuk Jumlah Peluru yang Menancap -->
-            <div class="mb-6">
-                <label for="bullets" class="block text-gray-700 text-sm font-semibold mb-2">Jumlah Peluru yang Menancap</label>
-                <select id="bullets" class="form-select block w-full px-4 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
-                    <option value="">Jumlah Peluru</option>
-                        <option value="1_3_bullet">1-3 peluru: +2%</option>
-                        <option value="4_5_bullet">4-5 peluru: +4%</option>
-                        <option value="6_7_bullet">6-7 peluru: +6%</option>
-                        <option value="8_9_bullet">8-9 peluru: +8%</option>
-                        <option value="10_bullet">≥ 10 peluru: 10%</option>
-                </select>
-            </div>
-
-            <!-- Input untuk Jumlah Bagian Tubuh yang Terluka -->
-            <div class="mb-6">
-                <label for="bodyPartsCount" class="block text-gray-700 text-sm font-semibold mb-2">Jumlah Bagian Tubuh yang Terluka</label>
-                <select id="bodyPartsCount" class="form-select block w-full px-4 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">
-                    <option value="">Bagian tubuh yang terluka</option>
-                        <option value="1_2_part">1-2 bagian: 70%</option>
-                        <option value="3_4_part">3-4 bagian: 80%</option>
-                        <option value="5_6_part">5-6 bagian: 90%</option>
-                        <option value="7_part">≥ 7 bagian: 100%</option>
-                </select>
-            </div>
-
-            <!-- Checkboxes untuk Obat -->
-            <div class="flex items-center space-x-4 mb-6">
-                <div class="flex items-center">
-                    <input type="checkbox" id="atropine" name="drug" class="mr-2" />
-                    <label for="atropine" class="text-base font-semibold">Atropine (-3%)</label>
+            <label for="injuryTypeOriginal" class="block text-gray-700 text-sm font-semibold mb-2">Pilih Jenis Luka</label>
+            <select id="injuryTypeOriginal" class="hidden">
+                <option value="">Pilih Luka</option>
+                <optgroup label="With Bullets (Luka dengan peluru)">
+                    <option value="head_flesh_50">Head: Flesh Wound (1 bullet) (50%)</option>
+                    <option value="head_vital_90">Head: Vital Wound (1 bullet) (90%)</option>
+                    <option value="neck_flesh_55">Neck: Any Wound (1 bullet) (55%)</option>
+                    <option value="torso_flesh_25">Torso: Flesh Wound (1 bullet) (25%)</option>
+                    <option value="torso_vital_60">Torso: Vital Wound (1 bullet) (60%)</option>
+                    <option value="groin_flesh_25">Groin: Flesh Wound (1 bullet) (25%)</option>
+                    <option value="groin_vital_45">Groin: Vital Wound (1 bullet) (45%)</option>
+                    <option value="arms_legs_flesh_10">Arms & Legs: Flesh Wound (1 bullet) (10%)</option>
+                    <option value="arms_legs_vital_15">Arms & Legs: Vital Wound (1 bullet) (15%)</option>
+                </optgroup>
+                <optgroup label="Without Bullets (Luka tanpa peluru)">
+                    <option value="head_flesh_45">Head: Flesh Wound (45%)</option>
+                    <option value="head_vital_90">Head: Vital Wound (90%)</option>
+                    <option value="brain_90">Brain: Any Wound (90%)</option>
+                    <option value="neck_50">Neck: Any Wound (50%)</option>
+                    <option value="torso_flesh_20">Torso: Flesh Wound (20%)</option>
+                    <option value="torso_vital_50">Torso: Vital Wound (50%)</option>
+                    <option value="groin_flesh_20">Groin: Flesh Wound (20%)</option>
+                    <option value="groin_vital_40">Groin: Vital Wound (40%)</option>
+                    <option value="arms_legs_flesh_10">Arms & Legs: Flesh Wound (10%)</option>
+                    <option value="arms_legs_vital_15">Arms & Legs: Vital Wound (15%)</option>
+                </optgroup>
+            </select>
+            <div id="injuryTypeCustom" class="custom-select-wrapper">
+                <div class="custom-select-button" tabindex="0">
+                    <span class="selected-value">Pilih Luka</span>
+                    <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-                <div class="flex items-center">
-                    <input type="checkbox" id="epinephrine" name="drug" class="mr-2" />
-                    <label for="epinephrine" class="text-base font-semibold">Epinephrine (-6%)</label>
-                </div>
-            </div>
-
-            <!-- Menampilkan hasil -->
-            <div id="result" class="mt-8 text-center text-xl hidden">
-                <p class="font-semibold text-black-600">Peluang PK: <span id="resultValue" class="font-bold text-2xl text-red-800">0%</span></p>
+                <div class="custom-select-options">
+                    </div>
             </div>
         </div>
-    </div>
 
+        <div class="mb-6">
+            <label for="bulletsOriginal" class="block text-gray-700 text-sm font-semibold mb-2">Jumlah Peluru yang Menancap</label>
+            <select id="bulletsOriginal" class="hidden">
+                <option value="">Jumlah Peluru</option>
+                <option value="1_3_bullet">1-3 peluru: +2%</option>
+                <option value="4_5_bullet">4-5 peluru: +4%</option>
+                <option value="6_7_bullet">6-7 peluru: +6%</option>
+                <option value="8_9_bullet">8-9 peluru: +8%</option>
+                <option value="10_bullet">≥ 10 peluru: 10%</option>
+            </select>
+            <div id="bulletsCustom" class="custom-select-wrapper">
+                <div class="custom-select-button" tabindex="0">
+                    <span class="selected-value">Jumlah Peluru</span>
+                    <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="custom-select-options">
+                    </div>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <label for="bodyPartsCountOriginal" class="block text-gray-700 text-sm font-semibold mb-2">Jumlah Bagian Tubuh yang Terluka</label>
+            <select id="bodyPartsCountOriginal" class="hidden">
+                <option value="">Bagian tubuh yang terluka</option>
+                <option value="1_2_part">1-2 bagian: 70%</option>
+                <option value="3_4_part">3-4 bagian: 80%</option>
+                <option value="5_6_part">5-6 bagian: 90%</option>
+                <option value="7_part">≥ 7 bagian: 100%</option>
+            </select>
+            <div id="bodyPartsCountCustom" class="custom-select-wrapper">
+                <div class="custom-select-button" tabindex="0">
+                    <span class="selected-value">Bagian tubuh yang terluka</span>
+                    <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="custom-select-options">
+                    </div>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-4 mb-6">
+            <div class="flex items-center">
+                <input type="checkbox" id="atropine" name="drug" class="mr-2" />
+                <label for="atropine" class="text-base font-semibold">Atropine (-3%)</label>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" id="epinephrine" name="drug" class="mr-2" />
+                <label for="epinephrine" class="text-base font-semibold">Epinephrine (-6%)</label>
+            </div>
+        </div>
+
+        <div id="result" class="mt-8 text-center text-xl hidden">
+            <p class="font-semibold text-black-600">Peluang PK: <span id="resultValue" class="font-bold text-2xl text-red-800">0%</span></p>
+        </div>
+    </div>
+    <div class="fixed bottom-4 right-4 text-gray-400 text-sm">
+        © SAFD - Kalkulator PK
+    </div>
     <script>
-        // Fungsi untuk menghitung PK
+        // Fungsi untuk menginisialisasi dropdown kustom
+        function initializeCustomSelect(originalSelectId, customWrapperId) {
+            const originalSelect = document.getElementById(originalSelectId);
+            const customWrapper = document.getElementById(customWrapperId);
+            const customButton = customWrapper.querySelector('.custom-select-button');
+            const customOptions = customWrapper.querySelector('.custom-select-options');
+            const selectedValueSpan = customButton.querySelector('.selected-value');
+
+            // Sembunyikan select asli
+            originalSelect.style.display = 'none';
+
+            // Set placeholder awal
+            if (originalSelect.options.length > 0 && originalSelect.options[0].value === "") {
+                selectedValueSpan.textContent = originalSelect.options[0].textContent;
+            }
+
+            // Populate custom options from original select
+            function populateOptions() {
+                customOptions.innerHTML = ''; // Clear previous options
+                Array.from(originalSelect.children).forEach((optionOrGroup, index) => {
+                    // Lewati opsi pertama jika itu adalah placeholder
+                    if (optionOrGroup.tagName === 'OPTION' && optionOrGroup.value === "" && index === 0) {
+                        return; // Lewati iterasi ini, jangan tambahkan ke dropdown
+                    }
+
+                    if (optionOrGroup.tagName === 'OPTGROUP') {
+                        const optgroupLabel = document.createElement('div');
+                        optgroupLabel.classList.add('optgroup-label');
+                        optgroupLabel.textContent = optionOrGroup.label;
+                        customOptions.appendChild(optgroupLabel);
+
+                        Array.from(optionOrGroup.children).forEach(option => {
+                            createCustomOption(option);
+                        });
+                    } else if (optionOrGroup.tagName === 'OPTION') {
+                        createCustomOption(optionOrGroup);
+                    }
+                });
+            }
+
+            function createCustomOption(originalOption) {
+                const customOption = document.createElement('div');
+                customOption.classList.add('custom-select-option');
+                customOption.textContent = originalOption.textContent;
+                customOption.dataset.value = originalOption.value; // Store the actual value
+
+                if (originalOption.selected && originalOption.value !== "") {
+                    customOption.classList.add('selected');
+                }
+
+                customOption.addEventListener('click', () => {
+                    // Update original select's value
+                    originalSelect.value = customOption.dataset.value;
+                    selectedValueSpan.textContent = customOption.textContent;
+
+                    // Remove 'selected' class from all options
+                    customOptions.querySelectorAll('.custom-select-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    // Add 'selected' class to the clicked option
+                    customOption.classList.add('selected');
+
+                    // Trigger change event on original select (important for calculation)
+                    originalSelect.dispatchEvent(new Event('change'));
+
+                    // Close the dropdown
+                    customOptions.style.display = 'none';
+                    customButton.classList.remove('open');
+                });
+                customOptions.appendChild(customOption);
+            }
+
+            populateOptions(); // Initial population
+
+            // Toggle dropdown visibility
+            customButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent closing immediately if clicked inside
+                // Close any other open custom dropdowns
+                document.querySelectorAll('.custom-select-options').forEach(options => {
+                    if (options !== customOptions) {
+                        options.style.display = 'none';
+                        options.closest('.custom-select-wrapper').querySelector('.custom-select-button').classList.remove('open');
+                    }
+                });
+
+                const isCurrentlyOpen = customOptions.style.display === 'block';
+
+                if (!isCurrentlyOpen) {
+                    // ----- PERUBAHAN DI SINI: Hapus baris ini -----
+                    // const buttonRect = customButton.getBoundingClientRect();
+                    // const viewportHeight = window.innerHeight;
+                    // const spaceBelow = viewportHeight - buttonRect.bottom - 10;
+                    // customOptions.style.maxHeight = `${Math.max(100, spaceBelow)}px`;
+                    // ----------------------------------------------
+
+                    customOptions.style.top = `${customButton.offsetHeight + 4}px`; // Menggunakan offsetHeight
+                    customOptions.style.bottom = 'auto'; // Pastikan tidak mengganggu bottom
+
+                    customOptions.style.display = 'block';
+                    customButton.classList.add('open');
+                } else {
+                    customOptions.style.display = 'none';
+                    customButton.classList.remove('open');
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!customWrapper.contains(e.target)) {
+                    customOptions.style.display = 'none';
+                    customButton.classList.remove('open');
+                }
+            });
+
+            // Handle keyboard navigation for accessibility
+            customButton.addEventListener('keydown', (e) => {
+                const isDropdownOpen = customOptions.style.display === 'block';
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    customButton.click(); // Open/close
+                } else if (e.key === 'ArrowDown' && !isDropdownOpen) {
+                    e.preventDefault();
+                    customButton.click(); // Open and focus first option
+                    // Allow a tiny delay for options to render before focusing
+                    setTimeout(() => {
+                        customOptions.querySelector('.custom-select-option')?.focus();
+                    }, 50);
+                } else if (e.key === 'Escape' && isDropdownOpen) {
+                    e.preventDefault();
+                    customOptions.style.display = 'none';
+                    customButton.classList.remove('open');
+                    customButton.focus();
+                }
+            });
+
+            customOptions.addEventListener('keydown', (e) => {
+                const activeElement = document.activeElement;
+                const options = Array.from(customOptions.querySelectorAll('.custom-select-option'));
+                const currentIndex = options.indexOf(activeElement);
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (currentIndex < options.length - 1) {
+                        options[currentIndex + 1].focus();
+                    } else if (options.length > 0) { // Wrap around to first option
+                        options[0].focus();
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (currentIndex > 0) {
+                        options[currentIndex - 1].focus();
+                    } else if (options.length > 0) { // Wrap around to last option
+                        options[options.length - 1].focus();
+                    }
+                } else if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    activeElement.click(); // Select the option
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    customOptions.style.display = 'none';
+                    customButton.classList.remove('open');
+                    customButton.focus();
+                }
+            });
+        }
+
+        // --- Fungsi Utama Kalkulator PK ---
         function calculatePK() {
-            // Ambil nilai dari dropdown luka, peluru, dan jumlah bagian tubuh
-            const injuryType = document.getElementById("injuryType").value;
-            const bullets = document.getElementById("bullets").value;
-            const bodyPartsCount = document.getElementById("bodyPartsCount").value;
+            // PENTING: Sekarang kita mengambil nilai dari original select tersembunyi
+            const injuryType = document.getElementById("injuryTypeOriginal").value;
+            const bullets = document.getElementById("bulletsOriginal").value;
+            const bodyPartsCount = document.getElementById("bodyPartsCountOriginal").value;
 
             // Validasi input
+            const resultElement = document.getElementById("result");
+            // Sembunyikan hasil jika ada input yang belum dipilih
             if (!injuryType || !bullets || !bodyPartsCount) {
-                return; // Jika input kosong atau tidak valid, tidak lakukan perhitungan
+                resultElement.classList.add("hidden");
+                return;
             }
 
             // Mendapatkan persentase berdasarkan pilihan luka
             let damagePercentage = 0;
             switch (injuryType) {
-                case 'head_flesh_45':
-                    damagePercentage = 45;
-                    break;
-                case 'head_vital_90':
-                    damagePercentage = 90;
-                    break;
-                case 'brain_90':
-                    damagePercentage = 90;
-                    break;
-                case 'neck_50':
-                    damagePercentage = 50;
-                    break;
-                case 'torso_flesh_20':
-                    damagePercentage = 20;
-                    break;
-                case 'torso_vital_50':
-                    damagePercentage = 50;
-                    break;
-                case 'groin_flesh_20':
-                    damagePercentage = 20;
-                    break;
-                case 'groin_vital_40':
-                    damagePercentage = 40;
-                    break;
-                case 'arms_legs_flesh_10':
-                    damagePercentage = 10;
-                    break;
-                case 'arms_legs_vital_15':
-                    damagePercentage = 15;
-                    break;
-                // Dengan peluru
-                case 'head_flesh_50':
-                    damagePercentage = 50;
-                    break;
-                case 'head_vital_90':
-                    damagePercentage = 90;
-                    break;
-                case 'neck_flesh_55':
-                    damagePercentage = 55;
-                    break;
-                case 'torso_flesh_25':
-                    damagePercentage = 25;
-                    break;
-                case 'torso_vital_60':
-                    damagePercentage = 60;
-                    break;
-                case 'groin_flesh_25':
-                    damagePercentage = 25;
-                    break;
-                case 'groin_vital_45':
-                    damagePercentage = 45;
-                    break;
-                case 'arms_legs_flesh_10':
-                    damagePercentage = 10;
-                    break;
-                case 'arms_legs_vital_15':
-                    damagePercentage = 15;
-                    break;
+                case 'head_flesh_45': damagePercentage = 45; break;
+                case 'head_vital_90': damagePercentage = 90; break;
+                case 'brain_90': damagePercentage = 90; break;
+                case 'neck_50': damagePercentage = 50; break;
+                case 'torso_flesh_20': damagePercentage = 20; break;
+                case 'torso_vital_50': damagePercentage = 50; break;
+                case 'groin_flesh_20': damagePercentage = 20; break;
+                case 'groin_vital_40': damagePercentage = 40; break;
+                case 'arms_legs_flesh_10': damagePercentage = 10; break;
+                case 'arms_legs_vital_15': damagePercentage = 15; break;
+                case 'head_flesh_50': damagePercentage = 50; break;
+                case 'neck_flesh_55': damagePercentage = 55; break;
+                case 'torso_flesh_25': damagePercentage = 25; break;
+                case 'torso_vital_60': damagePercentage = 60; break;
+                case 'groin_flesh_25': damagePercentage = 25; break;
+                case 'groin_vital_45': damagePercentage = 45; break;
             }
 
             // Hitung bonus peluru (y)
             let bulletBonus = 0;
             switch (bullets) {
-                case '1_3_bullet':
-                    bulletBonus = 2;
-                    break;
-                case '4_5_bullet':
-                    bulletBonus = 4;
-                    break;
-                case '6_7_bullet':
-                    bulletBonus = 6;
-                    break;
-                case '8_9_bullet':
-                    bulletBonus = 8;
-                    break;
-                case '10_bullet':
-                    bulletBonus = 10;
-                    break;
-                }
+                case '1_3_bullet': bulletBonus = 2; break;
+                case '4_5_bullet': bulletBonus = 4; break;
+                case '6_7_bullet': bulletBonus = 6; break;
+                case '8_9_bullet': bulletBonus = 8; break;
+                case '10_bullet': bulletBonus = 10; break;
+            }
 
             // Hitung pembagi bagian tubuh yang terluka (z)
             let bodyPartsModifier = 0;
             switch (bodyPartsCount) {
-                case '1_2_part':
-                    bodyPartsModifier = 70;
-                    break;
-                case '3_4_part':
-                    bodyPartsModifier = 80;
-                    break;
-                case '5_6_part':
-                    bodyPartsModifier = 90;
-                    break;
-                case '7_part':
-                    bodyPartsModifier = 100;
-                    break;
-                }
+                case '1_2_part': bodyPartsModifier = 70; break;
+                case '3_4_part': bodyPartsModifier = 80; break;
+                case '5_6_part': bodyPartsModifier = 90; break;
+                case '7_part': bodyPartsModifier = 100; break;
+            }
 
             // Hitung PK = (x + y) * z
             let pk = (damagePercentage + bulletBonus) * (bodyPartsModifier / 100);
 
             // Cek apakah Atropine atau Epinephrine digunakan
-            if (document.getElementById("atropine").checked) {
+            const atropineChecked = document.getElementById("atropine").checked;
+            const epinephrineChecked = document.getElementById("epinephrine").checked;
+
+            if (atropineChecked) {
                 pk -= 3; // Kurangi 3% jika Atropine digunakan
                 document.getElementById("epinephrine").disabled = true; // Nonaktifkan Epinephrine
-            } else if (document.getElementById("epinephrine").checked) {
+            } else if (epinephrineChecked) {
                 pk -= 6; // Kurangi 6% jika Epinephrine digunakan
                 document.getElementById("atropine").disabled = true; // Nonaktifkan Atropine
             } else {
@@ -268,24 +442,39 @@
                 document.getElementById("atropine").disabled = false; // Aktifkan Atropine
             }
 
+            // Pastikan PK tidak di bawah 0 atau di atas 100
+            pk = Math.max(0, Math.min(100, pk));
+
             // Pembulatan PK
-            const roundedPK = Math.round(pk);  
+            const roundedPK = Math.round(pk);
 
             // Menampilkan hasil
-            const resultElement = document.getElementById("result");
             const resultValue = document.getElementById("resultValue");
 
             resultElement.classList.remove("hidden");
             resultValue.textContent = roundedPK + "%";
         }
 
-        // Menambahkan event listener untuk setiap input field
-        document.getElementById("injuryType").addEventListener("change", calculatePK);
-        document.getElementById("bullets").addEventListener("input", calculatePK);
-        document.getElementById("bodyPartsCount").addEventListener("input", calculatePK);
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inisialisasi semua dropdown kustom
+            initializeCustomSelect('injuryTypeOriginal', 'injuryTypeCustom');
+            initializeCustomSelect('bulletsOriginal', 'bulletsCustom');
+            initializeCustomSelect('bodyPartsCountOriginal', 'bodyPartsCountCustom');
+
+            // Panggil kalkulasi awal
+            calculatePK();
+
+            // Tambahkan event listener untuk setiap dropdown kustom yang diinisialisasi
+            // Ini akan memicu calculatePK saat nilai dropdown berubah
+            document.getElementById("injuryTypeOriginal").addEventListener("change", calculatePK);
+            document.getElementById("bulletsOriginal").addEventListener("change", calculatePK);
+            document.getElementById("bodyPartsCountOriginal").addEventListener("change", calculatePK);
+        });
+
+        // Event listener untuk checkboxes obat (karena ini bukan dropdown kustom)
         document.getElementById("atropine").addEventListener("change", calculatePK);
         document.getElementById("epinephrine").addEventListener("change", calculatePK);
-
     </script>
 </body>
 </html>
